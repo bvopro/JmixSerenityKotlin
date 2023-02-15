@@ -1,7 +1,17 @@
+
+buildscript {
+    dependencies {
+        classpath "net.serenity-bdd:serenity-single-page-report:3.6.12"
+    }
+}
+
 plugins {
     id 'io.jmix' version '1.4.3'
     id 'org.jetbrains.kotlin.jvm' version '1.7.20'
     id 'java'
+
+    id "jacoco"
+    id "net.serenity-bdd.serenity-gradle-plugin" version "3.6.7"
 }
 
 apply plugin: 'org.springframework.boot'
@@ -13,11 +23,21 @@ jmix {
 group = 'com.company'
 version = '0.0.1-SNAPSHOT'
 
+
 repositories {
     mavenCentral()
     maven {
         url 'https://global.repo.jmix.io/repository/public'
     }
+}
+
+ext {
+    serenityVersion = '3.6.12'
+    cucumberVersion = '7.11.1';
+    junitPlatformVersion = '1.9.2'
+
+    assertJVersion = '3.22.0'
+    logbackVersion = '1.2.10'
 }
 
 dependencies {
@@ -41,8 +61,44 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+
+    //testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    // testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-spring:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
+    testImplementation "org.junit.platform:junit-platform-suite:${junitPlatformVersion}"
+
+    testImplementation "net.serenity-bdd:serenity-core:${serenityVersion}"
+    testImplementation "net.serenity-bdd:serenity-cucumber:${serenityVersion}"
+    testImplementation "net.serenity-bdd:serenity-spring:${serenityVersion}"
 }
+
 
 test {
     useJUnitPlatform()
+}
+
+test.finalizedBy(aggregate)
+
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+    all {
+        exclude group: 'org.codehaus.groovy', module: 'groovy'
+    }
+}
+
+
+aggregate {
+
+}
+
+serenity {
+    outputDirectory = "build/serenity"
+    // reports = ["html","single-page-html"]
 }
