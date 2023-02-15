@@ -33,7 +33,7 @@ import org.springframework.test.context.ActiveProfiles
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = Constants.PLUGIN_PROPERTY_NAME, value = "pretty, summary, json:build/cucumber/cucumber.json, html:build/cucumber/report.html")
 @ConfigurationParameter(key = Constants.PLUGIN_PUBLISH_QUIET_PROPERTY_NAME, value = "true")
-// @ConfigurationParameter(key = Constants.OBJECT_FACTORY_PROPERTY_NAME, value = "cucumber.runtime.SerenityObjectFactory") // spring
+@ConfigurationParameter(key = Constants.OBJECT_FACTORY_PROPERTY_NAME, value = "cucumber.runtime.SerenityObjectFactory") // spring
 class RunSerenityTest {
     @SpringBootTest(classes = [JmixSerenityKotlinApplicationTests::class])
     @ActiveProfiles(value = ["features"])
