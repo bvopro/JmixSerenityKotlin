@@ -63,14 +63,16 @@ dependencies {
     }
 
     //testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
-    // testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+    //testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
     testImplementation "io.cucumber:cucumber-spring:${cucumberVersion}"
     testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
     testImplementation "org.junit.platform:junit-platform-suite:${junitPlatformVersion}"
 
+    //testImplementation "net.serenity-bdd:serenity-junit5:${serenityVersion}"
     testImplementation "net.serenity-bdd:serenity-core:${serenityVersion}"
     testImplementation "net.serenity-bdd:serenity-spring:${serenityVersion}"
     testImplementation "net.serenity-bdd:serenity-cucumber:${serenityVersion}"
+    testImplementation "org.slf4j:slf4j-simple:2.0.5"
 }
 
 defaultTasks 'clean', 'test', 'aggregate'
@@ -90,9 +92,9 @@ jacoco {
 }
 
 configurations {
-    cucumberRuntime {
-        extendsFrom testImplementation
-    }
+//    cucumberRuntime {
+//        extendsFrom testImplementation
+//    }
     all {
         exclude group: 'org.codehaus.groovy', module: 'groovy'
     }
@@ -100,7 +102,11 @@ configurations {
 
 
 aggregate {
-
+    serenity {
+        //outputDirectory = layout.buildDirectory.toString() + "/serenity"
+        //testRoot = project.rootProject.projectDir.toString() + '/src/test/kotlin/com/company/jmixserenitykotlin'
+        //requirementsBaseDir = project.rootProject.projectDir.toString() + '/src/test/resources/features'
+    }
 }
 
 serenity {
