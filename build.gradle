@@ -69,14 +69,18 @@ dependencies {
     testImplementation "org.junit.platform:junit-platform-suite:${junitPlatformVersion}"
 
     testImplementation "net.serenity-bdd:serenity-core:${serenityVersion}"
-    testImplementation "net.serenity-bdd:serenity-cucumber:${serenityVersion}"
     testImplementation "net.serenity-bdd:serenity-spring:${serenityVersion}"
 }
 
+defaultTasks 'clean', 'test', 'aggregate'
 
 test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
     useJUnitPlatform()
 }
+
+gradle.startParameter.continueOnFailure = true
 
 test.finalizedBy(aggregate)
 
@@ -99,6 +103,8 @@ aggregate {
 }
 
 serenity {
-    outputDirectory = "build/serenity"
+    //outputDirectory = layout.buildDirectory.toString() + "/serenity"
     // reports = ["html","single-page-html"]
+    //testRoot = project.rootProject.projectDir.toString() + '/src/test/resources/features'
+    //requirementsBaseDir = project.rootProject.projectDir.toString() + '/src/test/resources/features'
 }
